@@ -1,0 +1,81 @@
+# src/global_agent_system/crews/daily_socials_crew/config/tasks.yaml
+
+research_ai_trends:
+  description: >
+    Search r/singularity, r/accelerate, and related forums for the most salient 
+    philosophical and humanist conversations regarding AGI and transhumanism. 
+    Focus on excitement, cultural shifts, and technological acceleration.
+  expected_output: >
+    A list of the top 5 trending philosophical or technological breakthroughs 
+    with context on why they are significant to the transhumanist conversation.
+  agent: ai_researcher
+
+research_culture_politics:
+  description: >
+    Monitor r/politics, AP, and Reuters for trending global events. Identify 
+    stories that deserve commentary, prioritizing those that intersect with 
+    technology, religion, or major cultural shifts.
+  expected_output: >
+    A summary of 5 high-salience news stories with primary source links 
+    and a brief explanation of the current public sentiment.
+  agent: culture_politics_researcher
+
+research_religion_nationalism:
+  description: >
+    Gather factual data on Christian Nationalism and its antagonists. 
+    Map activities from secular humanists, interfaith coalitions, legal 
+    watchdogs, and scientific rationalists. Maintain strict neutrality.
+  expected_output: >
+    A factual report detailing 5 key developments in religious power 
+    dynamics and the specific responses from antagonist groups.
+  agent: religion_researcher
+
+clean_and_structure_data:
+  description: >
+    Review all findings from the three researchers. Remove duplicates, 
+    verify links, and organize the data into a clean template for the writers. 
+    Identify the 10 most 'salient' stories across all categories.
+  expected_output: >
+    A structured knowledge base divided by category (AI, Religion, Culture) 
+    containing only the most relevant facts and source URLs.
+  agent: data_cleaner
+
+write_ai_social_options:
+  description: >
+    Using the cleaned AI research, draft 4-5 social media post options. 
+    Focus on the philosophical excitement and the future of humanity. 
+    Posts must be "scroll-stopping" and engaging.
+  expected_output: >
+    A set of draft social media posts with hooks and relevant hashtags 
+    focused on AI and transhumanism.
+  agent: ai_writer
+
+write_religion_social_options:
+  description: >
+    Using the cleaned religion research, draft 4-5 social media post options. 
+    Address religious friction and Christian Nationalism with nuance, 
+    incorporating the perspectives of the identified antagonists.
+  expected_output: >
+    A set of draft social media posts focused on religious trends 
+    and theological shifts.
+  agent: religion_writer
+
+write_culture_social_options:
+  description: >
+    Using the cleaned culture and politics research, draft 4-5 social media 
+    post options. Frame current events for maximum engagement and relevance 
+    to general cultural trends.
+  expected_output: >
+    A set of draft social media posts focused on political and cultural 
+    commentary.
+  agent: culture_writer
+
+edit_and_select_final_options:
+  description: >
+    Review all drafts from the three writers. Apply the provided strategic 
+    rubric to audit tone, accuracy, and salience. Select and polish the 
+    absolute best 10 options for final delivery.
+  expected_output: >
+    A final list of 10 polished social media posts, mapped to the rubric, 
+    formatted and ready for immediate publication.
+  agent: chief_editor

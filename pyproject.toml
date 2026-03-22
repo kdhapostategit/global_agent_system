@@ -1,0 +1,27 @@
+[project]
+name = "global_agent_system"
+version = "0.1.0"
+description = "global_agent_system using crewAI"
+authors = [{ name = "Your Name", email = "you@example.com" }]
+requires-python = ">=3.10,<3.14"
+dependencies = [
+    "crewai[google-genai,tools]==1.10.1",
+]
+
+[project.scripts]
+kickoff = "global_agent_system.main:kickoff"
+run_crew = "global_agent_system.main:kickoff"
+plot = "global_agent_system.main:plot"
+run_with_trigger = "global_agent_system.main:run_with_trigger"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.crewai]
+type = "flow"
+
+[tool.uv]
+required-environments = [
+    "sys_platform == 'win32' and platform_machine == 'AMD64'"
+]

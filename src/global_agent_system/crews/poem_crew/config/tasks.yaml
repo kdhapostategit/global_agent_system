@@ -1,0 +1,7 @@
+write_poem:
+  description: >
+    Write a poem inspired by {topic}.
+    Ensure the poem is engaging and memorable.
+  expected_output: >
+    A beautifully crafted poem about {topic}.
+  agent: poem_writer
