@@ -1,5 +1,6 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
+from crewai_tools import ScrapeWebsiteTool, SerperDevTool, FileReadTool
 
 @CrewBase
 class DailySocialsCrew:
@@ -7,27 +8,50 @@ class DailySocialsCrew:
 
     agents_config = "config/agents.yaml"
     tasks_config = "config/tasks.yaml"
+    search_tool = SerperDevTool()
+    scrape_tool = ScrapeWebsiteTool()
+    ai_rubric_tool = FileReadTool(file_path='knowledge/ai_researcher_rubric.txt')
+    culture_rubric_tool = FileReadTool(file_path='knowledge/culture_researcher_rubric.txt')
+    religion_rubric_tool = FileReadTool(file_path='knowledge/religion_researcher_rubric.txt')
+    cleaner_rubric_tool = FileReadTool(file_path='knowledge/data_cleaner_rubric.txt')
+    writer_rubric_tool = FileReadTool(file_path='knowledge/social_writer_rubric.txt')
+    editor_rubric_tool = FileReadTool(file_path='knowledge/chief_editor_rubric.txt')
 
     # --- AGENTS ---
     @agent
     def ai_researcher(self) -> Agent:
-        return Agent(config=self.agents_config["ai_researcher"])
+        return Agent(
+            config=self.agents_config["ai_researcher"],
+            tools=[self.search_tool, self.scrape_tool, self.ai_rubric_tool],
+        )
 
     @agent
     def culture_politics_researcher(self) -> Agent:
-        return Agent(config=self.agents_config["culture_politics_researcher"])
+        return Agent(
+            config=self.agents_config["culture_politics_researcher"],
+            tools=[self.search_tool, self.scrape_tool, self.culture_rubric_tool],
+        )
 
     @agent
     def religion_researcher(self) -> Agent:
-        return Agent(config=self.agents_config["religion_researcher"])
+        return Agent(
+            config=self.agents_config["religion_researcher"],
+            tools=[self.search_tool, self.scrape_tool, self.religion_rubric_tool],
+        )
 
     @agent
     def data_cleaner(self) -> Agent:
-        return Agent(config=self.agents_config["data_cleaner"])
+        return Agent(
+            config=self.agents_config["data_cleaner"],
+            tools=[self.cleaner_rubric_tool],
+        )
 
     @agent
     def ai_writer(self) -> Agent:
-        return Agent(config=self.agents_config["ai_writer"])
+        return Agent(
+            config=self.agents_config["ai_writer"],
+            tools=[self.writer_rubric_tool],
+        )
 
     @agent
     def religion_writer(self) -> Agent:
@@ -39,7 +63,10 @@ class DailySocialsCrew:
 
     @agent
     def chief_editor(self) -> Agent:
-        return Agent(config=self.agents_config["chief_editor"])
+        return Agent(
+            config=self.agents_config["chief_editor"],
+            tools=[self.editor_rubric_tool],
+        )
 
     # --- TASKS ---
     @task

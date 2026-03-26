@@ -1,6 +1,7 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.agents.agent_builder.base_agent import BaseAgent
 from crewai.project import CrewBase, agent, crew, task
+from crewai_tools import FileReadTool
 
 # If you want to run a snippet of code before or after the crew starts,
 # you can use the @before_kickoff and @after_kickoff decorators
@@ -20,12 +21,15 @@ class PoemCrew:
     agents_config = "config/agents.yaml"
     tasks_config = "config/tasks.yaml"
 
+    poem_rubric_tool = FileReadTool(file_path='knowledge/poem_writer_rubric.txt')
+
     # If you would lik to add tools to your crew, you can learn more about it here:
     # https://docs.crewai.com/concepts/agents#agent-tools
     @agent
     def poem_writer(self) -> Agent:
         return Agent(
             config=self.agents_config["poem_writer"],  # type: ignore[index]
+            tools=[self.poem_rubric_tool],
         )
 
     # To learn more about structured task outputs,

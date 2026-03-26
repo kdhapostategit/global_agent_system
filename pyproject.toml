@@ -5,7 +5,7 @@ description = "global_agent_system using crewAI"
 authors = [{ name = "Your Name", email = "you@example.com" }]
 requires-python = ">=3.10,<3.14"
 dependencies = [
-    "crewai[google-genai,tools]==1.10.1",
+    "crewai[google-genai,tools]>=1.11.1",
     # Official Gemini SDK (replaces deprecated google-generativeai for new integrations)
     "google-genai>=1.65.0",
     # Pin NumPy 1.26.x: single ABI for chromadb + onnxruntime + lancedb on Windows (avoid NumPy 2 mixed-extension crashes)

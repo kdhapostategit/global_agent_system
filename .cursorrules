@@ -1,0 +1,6 @@
+# CrewAI Framework Standards
+- **Flow Control:** Logic belongs in `main.py` using CrewAI Flows and Pydantic state.
+- **Strict YAML:** NEVER hardcode agent/task details in Python. Use the `config/` YAMLs.
+- **Boilerplate Tools:** Use standard `crewai_tools` classes instantiated once in the Crew class.
+- **Redundancy:** Ensure `.env` includes both `GEMINI_API_KEY` and `GOOGLE_API_KEY`.
+- **2026 Models:** Default to `gemini/gemini-2.5-flash` for all agents.
