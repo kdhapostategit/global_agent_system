@@ -1,8 +1,5 @@
-import os
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
-from crewai.knowledge.source.text_file_knowledge_source import TextFileKnowledgeSource
-from crewai.knowledge.source.pdf_knowledge_source import PDFKnowledgeSource
 
 @CrewBase
 class DailySocialsCrew:
@@ -10,19 +7,6 @@ class DailySocialsCrew:
 
     agents_config = "config/agents.yaml"
     tasks_config = "config/tasks.yaml"
-
-    def get_knowledge_sources(self):
-        """Scans the /knowledge folder and passes ONLY the filenames."""
-        sources = []
-        knowledge_dir = "knowledge" 
-        
-        if os.path.exists(knowledge_dir):
-            for file_name in os.listdir(knowledge_dir):
-                if file_name.endswith('.txt'):
-                    sources.append(TextFileKnowledgeSource(file_paths=[file_name]))
-                elif file_name.endswith('.pdf'):
-                    sources.append(PDFKnowledgeSource(file_paths=[file_name]))
-        return sources
 
     # --- AGENTS ---
     @agent
@@ -55,10 +39,7 @@ class DailySocialsCrew:
 
     @agent
     def chief_editor(self) -> Agent:
-        return Agent(
-            config=self.agents_config["chief_editor"],
-            knowledge_sources=self.get_knowledge_sources()
-        )
+        return Agent(config=self.agents_config["chief_editor"])
 
     # --- TASKS ---
     @task
@@ -102,10 +83,4 @@ class DailySocialsCrew:
             tasks=self.tasks,
             process=Process.sequential,
             verbose=True,
-            embedder={
-                "provider": "google-generativeai",
-                "config": {
-                    "model": "gemini-embedding-001"
-                }
-            }
         )

@@ -5,6 +5,8 @@ import time
 from datetime import datetime
 from typing import Any, cast
 
+from dotenv import load_dotenv
+
 from opentelemetry import baggage
 from pydantic import BaseModel
 
@@ -12,6 +14,9 @@ from crewai.flow import Flow, listen, router, start
 
 from global_agent_system.crews.daily_socials_crew.daily_socials_crew import DailySocialsCrew
 from global_agent_system.crews.poem_crew.poem_crew import PoemCrew
+
+# Load .env before any crew/knowledge code reads API keys or embedder config.
+load_dotenv()
 
 
 class AgentState(BaseModel):
@@ -64,22 +69,26 @@ def is_office_hours() -> bool:
 
 
 def kickoff():
-    """Runs the flow on a continuous 4-hour cycle during office hours."""
-    print("--- Social Engine Scheduler Started ---")
+    """Switch between single-run (Testing) and continuous-loop (Production)"""
+    print("--- Social Engine Started ---")
     
-    while True:
-        if is_office_hours():
-            print(f"[{datetime.now()}] GM: Starting a new 4-hour cycle...")
-            
-            agent_flow = AgentFlow()
-            # The word 'social' must be here to route down the social_path
-            agent_flow.kickoff(inputs={"topic": "Create daily social options across 3 beats"})
-            
-            print(f"[{datetime.now()}] GM: Cycle complete. Sleeping for 4 hours.")
-            time.sleep(14400)  # Pauses the terminal for exactly 4 hours
-        else:
-            print(f"[{datetime.now()}] GM: Outside office hours. Checking again in 30 mins.")
-            time.sleep(1800)  # Checks again in 30 minutes
+    # --- OPTION A: SINGLE RUN (Use this for Testing) ---
+    print(f"[{datetime.now()}] GM: Running single test cycle...")
+    agent_flow = AgentFlow()
+    agent_flow.kickoff(inputs={"topic": "Create daily social options across 3 beats"})
+    print(f"[{datetime.now()}] GM: Test complete.")
+
+    # --- OPTION B: SCHEDULER LOOP (Uncomment this for Production) ---
+    # while True:
+    #     if is_office_hours():
+    #         print(f"[{datetime.now()}] GM: Starting a new 4-hour cycle...")
+    #         agent_flow = AgentFlow()
+    #         agent_flow.kickoff(inputs={"topic": "Create daily social options across 3 beats"})
+    #         print(f"[{datetime.now()}] GM: Cycle complete. Sleeping for 4 hours.")
+    #         time.sleep(14400)
+    #     else:
+    #         print(f"[{datetime.now()}] GM: Outside office hours. Checking again in 30 mins.")
+    #         time.sleep(1800)
 
 
 def plot():

@@ -19,9 +19,13 @@ Next, navigate to your project directory and install the dependencies:
 crewai install
 ```
 
+### Windows / native crashes
+
+If you see **`STATUS_ACCESS_VIOLATION`** during `crewai` / flow kickoff, see **[WINDOWS_ENV.md](WINDOWS_ENV.md)** for NumPy/Chroma/ONNX alignment, recommended `.env` flags, and a clean `uv sync` procedure.
+
 ### Customizing
 
-**Add your `OPENAI_API_KEY` into the `.env` file**
+**Add your API keys into the `.env` file** (see `.env.example`). For Gemini, use `GEMINI_API_KEY` or `GOOGLE_API_KEY`.
 
 - Modify `src/global_agent_system/config/agents.yaml` to define your agents
 - Modify `src/global_agent_system/config/tasks.yaml` to define your tasks

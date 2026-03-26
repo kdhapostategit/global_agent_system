@@ -6,6 +6,11 @@ authors = [{ name = "Your Name", email = "you@example.com" }]
 requires-python = ">=3.10,<3.14"
 dependencies = [
     "crewai[google-genai,tools]==1.10.1",
+    # Official Gemini SDK (replaces deprecated google-generativeai for new integrations)
+    "google-genai>=1.65.0",
+    # Pin NumPy 1.26.x: single ABI for chromadb + onnxruntime + lancedb on Windows (avoid NumPy 2 mixed-extension crashes)
+    "numpy>=1.26.4,<2.0.0",
+    "sentence-transformers>=5.3.0",
 ]
 
 [project.scripts]
