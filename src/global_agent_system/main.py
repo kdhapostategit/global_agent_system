@@ -70,15 +70,22 @@ def is_office_hours() -> bool:
 
 def kickoff():
     """Switch between single-run (Testing) and continuous-loop (Production)"""
-    print("--- Social Engine Started ---")
+    print("--- Global Agent System Started ---")
     
-    # --- OPTION A: SINGLE RUN (Use this for Testing) ---
-    print(f"[{datetime.now()}] GM: Running single test cycle...")
+    # --- OPTION A: POEM CREW TEST (Currently Active) ---
+    print(f"[{datetime.now()}] GM: Running Poem Crew test cycle...")
     agent_flow = AgentFlow()
-    agent_flow.kickoff(inputs={"topic": "Create daily social options across 3 beats"})
-    print(f"[{datetime.now()}] GM: Test complete.")
+    # The router sends anything WITHOUT the word "social" to the poem path
+    agent_flow.kickoff(inputs={"topic": "Write a short haiku about a robot"})
+    print(f"[{datetime.now()}] GM: Poem test complete.")
 
-    # --- OPTION B: SCHEDULER LOOP (Uncomment this for Production) ---
+    # --- OPTION B: SOCIAL CREW SINGLE RUN (Commented out for now) ---
+    # print(f"[{datetime.now()}] GM: Running single Social Crew cycle...")
+    # agent_flow = AgentFlow()
+    # agent_flow.kickoff(inputs={"topic": "Create daily social options across 3 beats"})
+    # print(f"[{datetime.now()}] GM: Social test complete.")
+
+    # --- OPTION C: SCHEDULER LOOP (Commented out for Production) ---
     # while True:
     #     if is_office_hours():
     #         print(f"[{datetime.now()}] GM: Starting a new 4-hour cycle...")

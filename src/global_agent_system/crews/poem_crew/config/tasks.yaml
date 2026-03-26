@@ -1,7 +1,8 @@
 write_poem:
   description: >
     Write a poem inspired by {topic}.
-    Ensure the poem is engaging and memorable.
+    Ensure the poem is engaging and memorable. 
+    CRITICAL INSTRUCTION: Before you write a single word of the poem, you MUST use the FileReadTool to read the 'knowledge/poem_writer_rubric.txt' file. You must strictly follow the formatting rules provided in that document.
   expected_output: >
     A beautifully crafted poem about {topic}.
   agent: poem_writer
