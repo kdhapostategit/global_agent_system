@@ -5,6 +5,7 @@ research_ai_trends:
     Search r/singularity, r/accelerate, and related forums for the most salient 
     philosophical and humanist conversations regarding AGI and transhumanism. 
     Focus on excitement, cultural shifts, and technological acceleration.
+    CRITICAL INSTRUCTION: You MUST use the FileReadTool to read the 'knowledge/poem_writer_rubric.txt' file. You must strictly follow the formatting rules provided in that document.
   expected_output: >
     A list of the top 5 trending philosophical or technological breakthroughs 
     with context on why they are significant to the transhumanist conversation.
