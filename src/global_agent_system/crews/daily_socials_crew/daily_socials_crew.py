@@ -1,6 +1,9 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
-from crewai_tools import ScrapeWebsiteTool, SerperDevTool, FileReadTool
+from crewai_tools import SerperDevTool, ScrapeWebsiteTool, FileReadTool
+
+from global_agent_system.tools.custom_tool import RSSFeedTool
+
 
 @CrewBase
 class DailySocialsCrew:
@@ -8,64 +11,76 @@ class DailySocialsCrew:
 
     agents_config = "config/agents.yaml"
     tasks_config = "config/tasks.yaml"
-    search_tool = SerperDevTool()
-    scrape_tool = ScrapeWebsiteTool()
-    ai_rubric_tool = FileReadTool(file_path='knowledge/ai_researcher_rubric.txt')
-    culture_rubric_tool = FileReadTool(file_path='knowledge/culture_researcher_rubric.txt')
-    religion_rubric_tool = FileReadTool(file_path='knowledge/religion_researcher_rubric.txt')
-    cleaner_rubric_tool = FileReadTool(file_path='knowledge/data_cleaner_rubric.txt')
-    writer_rubric_tool = FileReadTool(file_path='knowledge/social_writer_rubric.txt')
-    editor_rubric_tool = FileReadTool(file_path='knowledge/chief_editor_rubric.txt')
 
     # --- AGENTS ---
     @agent
     def ai_researcher(self) -> Agent:
         return Agent(
             config=self.agents_config["ai_researcher"],
-            tools=[self.search_tool, self.scrape_tool, self.ai_rubric_tool],
+            tools=[
+                RSSFeedTool(),
+                SerperDevTool(),
+                ScrapeWebsiteTool(),
+                FileReadTool(),
+            ],
         )
 
     @agent
     def culture_politics_researcher(self) -> Agent:
         return Agent(
             config=self.agents_config["culture_politics_researcher"],
-            tools=[self.search_tool, self.scrape_tool, self.culture_rubric_tool],
+            tools=[
+                RSSFeedTool(),
+                SerperDevTool(),
+                ScrapeWebsiteTool(),
+                FileReadTool(),
+            ],
         )
 
     @agent
     def religion_researcher(self) -> Agent:
         return Agent(
             config=self.agents_config["religion_researcher"],
-            tools=[self.search_tool, self.scrape_tool, self.religion_rubric_tool],
+            tools=[
+                SerperDevTool(),
+                ScrapeWebsiteTool(),
+                FileReadTool(),
+            ],
         )
 
     @agent
     def data_cleaner(self) -> Agent:
         return Agent(
             config=self.agents_config["data_cleaner"],
-            tools=[self.cleaner_rubric_tool],
+            tools=[FileReadTool()],
         )
 
     @agent
     def ai_writer(self) -> Agent:
         return Agent(
             config=self.agents_config["ai_writer"],
-            tools=[self.writer_rubric_tool],
+            tools=[FileReadTool()],
         )
 
     @agent
     def religion_writer(self) -> Agent:
-        return Agent(config=self.agents_config["religion_writer"])
+        return Agent(
+            config=self.agents_config["religion_writer"],
+            tools=[FileReadTool()],
+        )
 
     @agent
     def culture_writer(self) -> Agent:
-        return Agent(config=self.agents_config["culture_writer"])
+        return Agent(
+            config=self.agents_config["culture_writer"],
+            tools=[FileReadTool()],
+        )
 
     @agent
     def chief_editor(self) -> Agent:
         return Agent(
             config=self.agents_config["chief_editor"],
-            tools=[self.editor_rubric_tool],
+            tools=[FileReadTool()],
         )
 
     # --- TASKS ---
@@ -82,20 +97,28 @@ class DailySocialsCrew:
         return Task(config=self.tasks_config["research_religion_nationalism"])
 
     @task
-    def clean_and_structure_data(self) -> Task:
-        return Task(config=self.tasks_config["clean_and_structure_data"])
+    def clean_ai_data(self) -> Task:
+        return Task(config=self.tasks_config["clean_ai_data"])
+
+    @task
+    def clean_culture_data(self) -> Task:
+        return Task(config=self.tasks_config["clean_culture_data"])
+
+    @task
+    def clean_religion_data(self) -> Task:
+        return Task(config=self.tasks_config["clean_religion_data"])
 
     @task
     def write_ai_social_options(self) -> Task:
         return Task(config=self.tasks_config["write_ai_social_options"])
 
     @task
-    def write_religion_social_options(self) -> Task:
-        return Task(config=self.tasks_config["write_religion_social_options"])
-
-    @task
     def write_culture_social_options(self) -> Task:
         return Task(config=self.tasks_config["write_culture_social_options"])
+
+    @task
+    def write_religion_social_options(self) -> Task:
+        return Task(config=self.tasks_config["write_religion_social_options"])
 
     @task
     def edit_and_select_final_options(self) -> Task:

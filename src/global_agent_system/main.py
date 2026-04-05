@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 import json
+import os
 import sys
 import time
 from datetime import datetime
+
+import requests
 from typing import Any, cast
 
 from dotenv import load_dotenv
@@ -68,8 +71,41 @@ def is_office_hours() -> bool:
     return True
 
 
+def sync_google_docs():
+    """Fetches the latest version of public Google Docs as plain text."""
+    print("🔄 Syncing live knowledge base from Google Docs...")
+
+    # Using the /export?format=txt endpoint to download clean text
+    docs_to_sync = {
+        "kevins_philosophy_source.txt": (
+            "https://docs.google.com/document/d/"
+            "13i1J1jOfdZFGOcd4eNYNU0ki8Q4f1h-AUR8jZnjMAR4/export?format=txt"
+        ),
+    }
+
+    knowledge_dir = os.path.join(
+        os.path.dirname(__file__), "../../knowledge/daily_socials_knowledge"
+    )
+    os.makedirs(knowledge_dir, exist_ok=True)
+
+    for filename, url in docs_to_sync.items():
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+
+            filepath = os.path.join(knowledge_dir, filename)
+            with open(filepath, "w", encoding="utf-8") as f:
+                f.write(response.text)
+            print(f"✅ Successfully updated: {filename}")
+        except Exception as e:
+            print(
+                f"❌ Failed to update {filename}. Using cached local version. Error: {e}"
+            )
+
+
 def kickoff():
     """Switch between single-run (Testing) and continuous-loop (Production)"""
+    sync_google_docs()
     print("--- Global Agent System Started ---")
     
     # --- OPTION A: POEM CREW TEST (Currently Active) ---

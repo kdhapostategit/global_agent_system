@@ -5,6 +5,8 @@ description = "global_agent_system using crewAI"
 authors = [{ name = "Your Name", email = "you@example.com" }]
 requires-python = ">=3.10,<3.14"
 dependencies = [
+    "requests>=2.32.0",
+    "feedparser>=6.0.11",
     "crewai[google-genai,tools]>=1.11.1",
     # Official Gemini SDK (replaces deprecated google-generativeai for new integrations)
     "google-genai>=1.65.0",
