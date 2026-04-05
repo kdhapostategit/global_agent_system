@@ -2,81 +2,202 @@
 
 research_ai_trends:
   description: >
-    Search r/singularity, r/accelerate, and related forums for the most salient 
-    philosophical and humanist conversations regarding AGI and transhumanism. 
-    Focus on excitement, cultural shifts, and technological acceleration.
-    CRITICAL INSTRUCTION: You MUST use the FileReadTool to read the 'knowledge/poem_writer_rubric.txt' file. You must strictly follow the formatting rules provided in that document.
+    Search r/singularity, r/accelerate, Hacker News, and the bleeding-edge AI spaces on X/Twitter 
+    for the absolute biggest, most paradigm-shifting AI news of the past 24 hours. You are hunting 
+    for major model drops, timeline accelerations, technical breakthroughs, and the major cultural 
+    conversations and debates happening within these communities. Your primary goal is to gather 
+    the raw data, facts, and prevailing community sentiments. Do not apply a philosophical filter 
+    yourself—simply prep the most salient data so the writer can apply their rubric later.
+    
+    CRITICAL INSTRUCTION: You MUST use the FileReadTool to read the 'knowledge/daily_socials_knowledge/ai_researcher_rubric.txt' file. You must strictly follow the formatting rules provided in that document.
+    
+    TOOL INSTRUCTION: You must use the RSSFeedTool alongside the SerperDevTool and ScrapeWebsiteTool to gather the most up-to-date and relevant grassroots discussions.
   expected_output: >
     A list of the top 5 trending philosophical or technological breakthroughs 
-    with context on why they are significant to the transhumanist conversation.
+    with 2 paragraphs of context on why they are significant to the transhumanist conversation. Importantly, you must include all URL sources.
   agent: ai_researcher
 
 research_culture_politics:
   description: >
-    Monitor r/politics, AP, and Reuters for trending global events. Identify 
-    stories that deserve commentary, prioritizing those that intersect with 
-    technology, religion, or major cultural shifts.
+    Monitor r/politics, AP, and Reuters for trending U.S. news and global events that directly 
+    concern or impact the U.S. Identify stories that deserve commentary, slightly prioritizing 
+    those that intersect with Christian Nationalism, GenAI, or major cultural shifts.
+    
+    CRITICAL INSTRUCTION: You MUST use the FileReadTool to read the 'knowledge/daily_socials_knowledge/culture_researcher_rubric.txt' file. You must strictly follow the formatting rules provided in that document.
+    
+    TOOL INSTRUCTION: You must use the RSSFeedTool for any Reddit sources (like r/politics), alongside the SerperDevTool and ScrapeWebsiteTool to ensure the data gathered is real-time, accurate, and properly sourced with URLs.
   expected_output: >
     A summary of 5 high-salience news stories with primary source links 
-    and a brief explanation of the current public sentiment.
+    and 2 paragraphs of explanation of the current public sentiment. Importantly, you must include all URL sources.
   agent: culture_politics_researcher
 
 research_religion_nationalism:
   description: >
-    Gather factual data on Christian Nationalism and its antagonists. 
-    Map activities from secular humanists, interfaith coalitions, legal 
-    watchdogs, and scientific rationalists. Maintain strict neutrality.
+    Gather factual data on Christian Nationalism and its antagonists. Focus specifically 
+    on powerful political figures and influencers who resonate with Christian Nationalism 
+    (e.g., Mike Johnson, Marjorie Taylor Greene, Lauren Boebert, Michael Flynn, and 
+    leaders within the New Apostolic Reformation). Map their activities and the counter-activities 
+    from secular humanists, interfaith coalitions, legal watchdogs, and scientific rationalists. 
+    Maintain strict neutrality.
+    
+    CRITICAL INSTRUCTION: You MUST use the FileReadTool to read the 'knowledge/daily_socials_knowledge/religion_researcher_rubric.txt' file. You must strictly follow the formatting rules provided in that document.
+    
+    TOOL INSTRUCTION: Utilize the SerperDevTool and ScrapeWebsiteTool to ensure the data gathered is real-time, accurate, and properly sourced with URLs.
   expected_output: >
     A factual report detailing 5 key developments in religious power 
-    dynamics and the specific responses from antagonist groups.
+    dynamics and 2 paragraphs of specific responses from antagonist groups. Importantly, you must include all URL sources.
   agent: religion_researcher
 
-clean_and_structure_data:
+clean_ai_data:
   description: >
-    Review all findings from the three researchers. Remove duplicates, 
-    verify links, and organize the data into a clean template for the writers. 
-    Identify the 10 most 'salient' stories across all categories.
+    Review findings from the AI researcher. Remove duplicates, verify links, 
+    and organize the data into a strict JSON format for the AI writer. 
+    Identify the most 'salient' stories from the AI category.
+    
+    You MUST format your output as a JSON array of objects using exactly this template:
+    [
+      {
+        "headline": "The main headline or topic",
+        "facts": "A summary of the core facts",
+        "context": "2 paragraphs of context explaining the significance",
+        "urls": ["https://source-url-1.com", "https://source-url-2.com"]
+      }
+    ]
+    
+    CRITICAL INSTRUCTION: You MUST use the FileReadTool to read the 'knowledge/daily_socials_knowledge/data_cleaner_rubric.txt' file. You must strictly follow the formatting rules provided in that document.
   expected_output: >
-    A structured knowledge base divided by category (AI, Religion, Culture) 
-    containing only the most relevant facts and source URLs.
+    A strictly formatted JSON array containing the most relevant facts, 2 paragraphs of context for each story, and all preserved source URLs for the AI category.
   agent: data_cleaner
+  context:
+    - research_ai_trends
+
+clean_culture_data:
+  description: >
+    Review findings from the culture researcher. Remove duplicates, verify links, 
+    and organize the data into a strict JSON format for the culture writer. 
+    Identify the most 'salient' stories from the Culture category.
+    
+    You MUST format your output as a JSON array of objects using exactly this template:
+    [
+      {
+        "headline": "The main headline or topic",
+        "facts": "A summary of the core facts",
+        "context": "2 paragraphs of context explaining the significance",
+        "urls": ["https://source-url-1.com", "https://source-url-2.com"]
+      }
+    ]
+    
+    CRITICAL INSTRUCTION: You MUST use the FileReadTool to read the 'knowledge/daily_socials_knowledge/data_cleaner_rubric.txt' file. You must strictly follow the formatting rules provided in that document.
+  expected_output: >
+    A strictly formatted JSON array containing the most relevant facts, 2 paragraphs of context for each story, and all preserved source URLs for the Culture category.
+  agent: data_cleaner
+  context:
+    - research_culture_politics
+
+clean_religion_data:
+  description: >
+    Review findings from the religion researcher. Remove duplicates, verify links, 
+    and organize the data into a strict JSON format for the religion writer. 
+    Identify the most 'salient' stories from the Religion category.
+    
+    You MUST format your output as a JSON array of objects using exactly this template:
+    [
+      {
+        "headline": "The main headline or topic",
+        "facts": "A summary of the core facts",
+        "context": "2 paragraphs of context explaining the significance",
+        "urls": ["https://source-url-1.com", "https://source-url-2.com"]
+      }
+    ]
+    
+    CRITICAL INSTRUCTION: You MUST use the FileReadTool to read the 'knowledge/daily_socials_knowledge/data_cleaner_rubric.txt' file. You must strictly follow the formatting rules provided in that document.
+  expected_output: >
+    A strictly formatted JSON array containing the most relevant facts, 2 paragraphs of context for each story, and all preserved source URLs for the Religion category.
+  agent: data_cleaner
+  context:
+    - research_religion_nationalism
 
 write_ai_social_options:
   description: >
-    Using the cleaned AI research, draft 4-5 social media post options. 
-    Focus on the philosophical excitement and the future of humanity. 
-    Posts must be "scroll-stopping" and engaging.
+    Using the cleaned AI research (which contains 5 stories), you must select the 3 absolute best 
+    stories to write social media posts about. You must evaluate the 5 available stories against 
+    the following Selection Rubric before drafting:
+    
+    SELECTION RUBRIC:
+    1. Narrative Tension: Does this story represent a significant shift in the human-AI relationship?
+    2. Virality Potential: Is the topic currently dominating r/singularity or X/Twitter discourse?
+    3. Brand Alignment: Does this news allow for commentary grounded in [kevins_philosophy_source]?
+    
+    CRITICAL INSTRUCTION: You MUST use the FileReadTool to read BOTH the 
+    'knowledge/daily_socials_knowledge/social_writer_rubric.txt' and the 
+    'knowledge/daily_socials_knowledge/style_guide.txt' files. You must strictly follow both documents 
+    to handle the brainstorming, writing tone, and the final selection of the 3 stories and their corresponding posts.
   expected_output: >
-    A set of draft social media posts with hooks and relevant hashtags 
-    focused on AI and transhumanism.
+    A final curated set of exactly 3 social media posts (one for each of the 3 selected stories) 
+    with hooks and relevant hashtags focused on AI and transhumanism. Importantly, you must include the related URL sources alongside each post.
   agent: ai_writer
-
-write_religion_social_options:
-  description: >
-    Using the cleaned religion research, draft 4-5 social media post options. 
-    Address religious friction and Christian Nationalism with nuance, 
-    incorporating the perspectives of the identified antagonists.
-  expected_output: >
-    A set of draft social media posts focused on religious trends 
-    and theological shifts.
-  agent: religion_writer
+  context:
+    - clean_ai_data
 
 write_culture_social_options:
   description: >
-    Using the cleaned culture and politics research, draft 4-5 social media 
-    post options. Frame current events for maximum engagement and relevance 
-    to general cultural trends.
+    Using the cleaned culture research (which contains 5 stories), you must select the 3 absolute best 
+    stories to write social media posts about. You must evaluate the 5 available stories against 
+    the following Selection Rubric before drafting:
+    
+    SELECTION RUBRIC:
+    1. Narrative Tension: Does this story represent a significant shift in U.S. cultural or political power?
+    2. Virality Potential: Is the topic triggering high engagement on r/politics or major news outlets?
+    3. Brand Alignment: Does this news allow for commentary grounded in [kevins_philosophy_source]?
+    
+    CRITICAL INSTRUCTION: You MUST use the FileReadTool to read BOTH the 
+    'knowledge/daily_socials_knowledge/social_writer_rubric.txt' and the 
+    'knowledge/daily_socials_knowledge/style_guide.txt' files. You must strictly follow both documents 
+    to handle the brainstorming, writing tone, and the final selection of the 3 stories and their corresponding posts.
   expected_output: >
-    A set of draft social media posts focused on political and cultural 
-    commentary.
+    A final curated set of exactly 3 social media posts (one for each of the 3 selected stories) 
+    focused on political and cultural commentary. Importantly, you must include the related URL sources alongside each post.
   agent: culture_writer
+  context:
+    - clean_culture_data
+
+write_religion_social_options:
+  description: >
+    Using the cleaned religion research (which contains 5 stories), you must select the 3 absolute best 
+    stories to write social media posts about. You must evaluate the 5 available stories against 
+    the following Selection Rubric before drafting:
+    
+    SELECTION RUBRIC:
+    1. Narrative Tension: Does this story expose a critical development in theocratic power or resistance?
+    2. Virality Potential: Is the topic generating friction or debate among major religious and secular influencers?
+    3. Brand Alignment: Does this news allow for commentary grounded in [kevins_philosophy_source]?
+    
+    CRITICAL INSTRUCTION: You MUST use the FileReadTool to read BOTH the 
+    'knowledge/daily_socials_knowledge/social_writer_rubric.txt' and the 
+    'knowledge/daily_socials_knowledge/style_guide.txt' files. You must strictly follow both documents 
+    to handle the brainstorming, writing tone, and the final selection of the 3 stories and their corresponding posts.
+  expected_output: >
+    A final curated set of exactly 3 social media posts (one for each of the 3 selected stories) 
+    focused on religious trends and theological shifts. Importantly, you must include the related URL sources alongside each post.
+  agent: religion_writer
+  context:
+    - clean_religion_data
 
 edit_and_select_final_options:
   description: >
     Review all drafts from the three writers. Apply the provided strategic 
     rubric to audit tone, accuracy, and salience. Select and polish the 
-    absolute best 10 options for final delivery.
+    absolute best 9 options for final delivery.
+    
+    CRITICAL INSTRUCTION: You MUST use the FileReadTool to read BOTH the 
+    'knowledge/daily_socials_knowledge/chief_editor_rubric.txt' and the 
+    'knowledge/daily_socials_knowledge/style_guide.txt' files. You must strictly follow 
+    the strategic guidelines in the editor rubric and the formatting and brand rules in the style guide.
   expected_output: >
-    A final list of 10 polished social media posts, mapped to the rubric, 
-    formatted and ready for immediate publication.
+    A final list of 9 polished social media posts, mapped to the rubric, 
+    formatted and ready for immediate publication. Importantly, you must include the final source URLs for each post so they can be easily shared.
   agent: chief_editor
+  context:
+    - write_ai_social_options
+    - write_culture_social_options
+    - write_religion_social_options
