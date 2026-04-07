@@ -1,5 +1,3 @@
-EXCELSIOR
-
 Writer Bot: Content Generation & 3x3 Format Rubric
 
 1. THE ARCHITECTURAL GOAL

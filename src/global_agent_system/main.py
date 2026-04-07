@@ -1,15 +1,16 @@
 #!/usr/bin/env python
 import json
 import os
+import re
 import sys
 import time
 from datetime import datetime
-
-import requests
 from typing import Any, cast
 
+import gspread
+import requests
 from dotenv import load_dotenv
-
+from google.oauth2.service_account import Credentials
 from opentelemetry import baggage
 from pydantic import BaseModel
 
@@ -20,6 +21,96 @@ from global_agent_system.crews.poem_crew.poem_crew import PoemCrew
 
 # Load .env before any crew/knowledge code reads API keys or embedder config.
 load_dotenv()
+
+_GSHEETS_SCOPES = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive"
+]
+
+def _parse_chief_editor_rows(raw: str) -> list[list[str]]:
+    """Parse Chief Editor output into A–E column values. Handles optional brackets."""
+    rows: list[list[str]] = []
+    # Split by ITEM followed by a number and colon/dash (Extremely Loose Version)
+    items = re.split(r"ITEM\s*\d+\s*[:\-]", raw, flags=re.IGNORECASE)
+    
+    for chunk in items:
+        if not chunk.strip(): 
+            continue
+        
+        # 1. Topic: Take the first non-empty line
+        topic_lines = [line.strip() for line in chunk.strip().split('\n') if line.strip()]
+        topic = topic_lines[0] if topic_lines else "Unknown Topic"
+        
+        # 2. URL: Find the first https link
+        url_match = re.search(r"https?://\S+", chunk)
+        url = url_match.group(0) if url_match else "No URL Found"
+        
+        # 3. Renditions: Split by the three keywords
+        parts = re.split(r"Short\s+Rendition|Medium\s+Rendition|Long\s+Rendition", chunk, flags=re.IGNORECASE)
+        
+        if len(parts) >= 4:
+            # Cleanup: remove leftover characters like [ ] : *
+            short = parts[1].strip().strip('[]:* ').strip()
+            medium = parts[2].strip().strip('[]:* ').strip()
+            long = parts[3].strip().strip('[]:* ').strip()
+            rows.append([topic, url, short, medium, long])
+            
+    return rows
+
+
+def send_to_google_sheets(chief_editor_raw: str) -> None:
+    """Delivers data to the first available row based on Column A, keeping checkboxes intact."""
+    cred_env = os.environ.get("DAILY_SOCIALS_GOOGLE_CREDENTIALS")
+    sheet_id = os.environ.get("DAILY_SOCIALS_GOOGLE_SHEET_ID")
+    if not cred_env or not sheet_id:
+        print(
+            "Skipping Google Sheets: set DAILY_SOCIALS_GOOGLE_CREDENTIALS and "
+            "DAILY_SOCIALS_GOOGLE_SHEET_ID"
+        )
+        return
+
+    cred_path = os.path.abspath(os.path.expanduser(cred_env))
+    if not os.path.isfile(cred_path):
+        print(f"Skipping Google Sheets: credentials file not found: {cred_path}")
+        return
+
+    parsed = _parse_chief_editor_rows(chief_editor_raw or "")
+    if not parsed:
+        print(
+            "Google Sheets: no rows parsed from Chief Editor output; nothing appended."
+        )
+        return
+
+    try:
+        creds = Credentials.from_service_account_file(cred_path, scopes=_GSHEETS_SCOPES)
+        gc = gspread.authorize(creds)
+        spreadsheet = gc.open_by_key(sheet_id.strip())
+        worksheet = spreadsheet.worksheet("Daily Socials Review")
+
+        # --- SMART FILLER LOGIC ---
+        # 1. Get all values in Column A to see where the topics end
+        col_a_values = worksheet.col_values(1)
+        
+        # 2. Find the next available row starting from Row 2
+        start_row = 2
+        for i, val in enumerate(col_a_values):
+            if i == 0: continue # Skip header
+            if not val or val.strip() == "":
+                start_row = i + 1
+                break
+        else:
+            start_row = len(col_a_values) + 1
+            
+        # 3. Define the range from Column A to E
+        end_row = start_row + len(parsed) - 1
+        target_range = f"A{start_row}:E{end_row}"
+        
+        # 4. Update the range instead of appending, so it ignores Column F checkboxes
+        worksheet.update(range_name=target_range, values=parsed, value_input_option="USER_ENTERED")
+        print(f"🚀 Google Sheets: Successfully parked {len(parsed)} items starting at Row {start_row}.")
+
+    except Exception as e:
+        print(f"Google Sheets delivery failed: {e}")
 
 
 class AgentState(BaseModel):
@@ -37,9 +128,10 @@ class AgentFlow(Flow[AgentState]):
 
     @router(accept_user_input)
     def route_by_topic(self, _result: Any) -> str:
-        if "social" in self.state.topic.lower():
-            return "social_path"
-        return "poem_path"
+        # Default: Daily Socials Crew. Poem Crew only when the topic explicitly mentions "poem".
+        if "poem" in self.state.topic.lower():
+            return "poem_path"
+        return "social_path"
 
     @listen("poem_path")
     def run_poem_crew(self, _result: Any) -> None:
@@ -58,6 +150,7 @@ class AgentFlow(Flow[AgentState]):
             .kickoff(inputs={"topic": self.state.topic})
         )
         self.state.content_output = result.raw
+        send_to_google_sheets(result.raw)
 
 
 # --- NEW SCHEDULER LOGIC ---
@@ -108,18 +201,17 @@ def kickoff():
     sync_google_docs()
     print("--- Global Agent System Started ---")
     
-    # --- OPTION A: POEM CREW TEST (Currently Active) ---
-    print(f"[{datetime.now()}] GM: Running Poem Crew test cycle...")
-    agent_flow = AgentFlow()
-    # The router sends anything WITHOUT the word "social" to the poem path
-    agent_flow.kickoff(inputs={"topic": "Write a short haiku about a robot"})
-    print(f"[{datetime.now()}] GM: Poem test complete.")
-
-    # --- OPTION B: SOCIAL CREW SINGLE RUN (Commented out for now) ---
-    # print(f"[{datetime.now()}] GM: Running single Social Crew cycle...")
+    # --- OPTION A: POEM CREW TEST (Deactivated) ---
+    # print(f"[{datetime.now()}] GM: Running Poem Crew test cycle...")
     # agent_flow = AgentFlow()
-    # agent_flow.kickoff(inputs={"topic": "Create daily social options across 3 beats"})
-    # print(f"[{datetime.now()}] GM: Social test complete.")
+    # agent_flow.kickoff(inputs={"topic": "Write a short haiku about a robot"})
+    # print(f"[{datetime.now()}] GM: Poem test complete.")
+
+    # --- OPTION B: SOCIAL CREW SINGLE RUN (Activated for Sheets Test) ---
+    print(f"[{datetime.now()}] GM: Running single Social Crew cycle...")
+    agent_flow = AgentFlow()
+    agent_flow.kickoff(inputs={"topic": "Create daily social options across 3 beats"})
+    print(f"[{datetime.now()}] GM: Social test complete.")
 
     # --- OPTION C: SCHEDULER LOOP (Commented out for Production) ---
     # while True:

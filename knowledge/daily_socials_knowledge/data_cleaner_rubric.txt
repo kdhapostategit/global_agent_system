@@ -44,5 +44,3 @@ Your value lies in the cleaner_audit field. Use this to highlight nuances the re
 You must output 3 distinct JSON blocks (one per researcher).
 
 Each block must contain exactly 3 items.
-
-No conversational filler. Start your response with EXCELSIOR and end with your final JSON blocks.
