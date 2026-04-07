@@ -119,83 +119,44 @@ clean_religion_data:
 
 write_ai_social_options:
   description: >
-    Using the cleaned AI research (which contains 5 stories), you must select the 3 absolute best 
-    stories to write social media posts about. You must evaluate the 5 available stories against 
-    the following Selection Rubric before drafting:
-    
-    SELECTION RUBRIC:
-    1. Narrative Tension: Does this story represent a significant shift in the human-AI relationship?
-    2. Virality Potential: Is the topic currently dominating r/singularity or X/Twitter discourse?
-    3. Brand Alignment: Does this news allow for commentary grounded in [kevins_philosophy_source]?
-    
-    CRITICAL INSTRUCTION: You MUST use the FileReadTool to read BOTH the 
-    'knowledge/daily_socials_knowledge/social_writer_rubric.txt' and the 
-    'knowledge/daily_socials_knowledge/style_guide.txt' files. You must strictly follow both documents 
-    to handle the brainstorming, writing tone, and the final selection of the 3 stories and their corresponding posts.
+    Using the cleaned AI research, select the 3 absolute best distinct stories. 
+    Evaluate them against the Selection Rubric (Narrative Tension, Virality Potential, Brand Alignment).
+    CRITICAL INSTRUCTION: You MUST use the FileReadTool to read BOTH the 'knowledge/daily_socials_knowledge/social_writer_rubric.txt' and the 'knowledge/daily_socials_knowledge/style_guide.txt' files.
   expected_output: >
-    A final curated set of exactly 3 social media posts (one for each of the 3 selected stories) 
-    with hooks and relevant hashtags focused on AI and transhumanism. Importantly, you must include the related URL sources alongside each post.
+    EXACTLY 3 distinct stories. For EACH of the 3 stories, you must provide a Short Rendition, Medium Rendition, and Long Rendition. You must clearly include the Source URL for each story.
   agent: ai_writer
   context:
     - clean_ai_data
 
 write_culture_social_options:
   description: >
-    Using the cleaned culture research (which contains 5 stories), you must select the 3 absolute best 
-    stories to write social media posts about. You must evaluate the 5 available stories against 
-    the following Selection Rubric before drafting:
-    
-    SELECTION RUBRIC:
-    1. Narrative Tension: Does this story represent a significant shift in U.S. cultural or political power?
-    2. Virality Potential: Is the topic triggering high engagement on r/politics or major news outlets?
-    3. Brand Alignment: Does this news allow for commentary grounded in [kevins_philosophy_source]?
-    
-    CRITICAL INSTRUCTION: You MUST use the FileReadTool to read BOTH the 
-    'knowledge/daily_socials_knowledge/social_writer_rubric.txt' and the 
-    'knowledge/daily_socials_knowledge/style_guide.txt' files. You must strictly follow both documents 
-    to handle the brainstorming, writing tone, and the final selection of the 3 stories and their corresponding posts.
+    Using the cleaned culture research, select the 3 absolute best distinct stories. 
+    Evaluate them against the Selection Rubric (Narrative Tension, Virality Potential, Brand Alignment).
+    CRITICAL INSTRUCTION: You MUST use the FileReadTool to read BOTH the 'knowledge/daily_socials_knowledge/social_writer_rubric.txt' and the 'knowledge/daily_socials_knowledge/style_guide.txt' files.
   expected_output: >
-    A final curated set of exactly 3 social media posts (one for each of the 3 selected stories) 
-    focused on political and cultural commentary. Importantly, you must include the related URL sources alongside each post.
+    EXACTLY 3 distinct stories. For EACH of the 3 stories, you must provide a Short Rendition, Medium Rendition, and Long Rendition. You must clearly include the Source URL for each story.
   agent: culture_writer
   context:
     - clean_culture_data
 
 write_religion_social_options:
   description: >
-    Using the cleaned religion research (which contains 5 stories), you must select the 3 absolute best 
-    stories to write social media posts about. You must evaluate the 5 available stories against 
-    the following Selection Rubric before drafting:
-    
-    SELECTION RUBRIC:
-    1. Narrative Tension: Does this story expose a critical development in theocratic power or resistance?
-    2. Virality Potential: Is the topic generating friction or debate among major religious and secular influencers?
-    3. Brand Alignment: Does this news allow for commentary grounded in [kevins_philosophy_source]?
-    
-    CRITICAL INSTRUCTION: You MUST use the FileReadTool to read BOTH the 
-    'knowledge/daily_socials_knowledge/social_writer_rubric.txt' and the 
-    'knowledge/daily_socials_knowledge/style_guide.txt' files. You must strictly follow both documents 
-    to handle the brainstorming, writing tone, and the final selection of the 3 stories and their corresponding posts.
+    Using the cleaned religion research, select the 3 absolute best distinct stories. 
+    Evaluate them against the Selection Rubric (Narrative Tension, Virality Potential, Brand Alignment).
+    CRITICAL INSTRUCTION: You MUST use the FileReadTool to read BOTH the 'knowledge/daily_socials_knowledge/social_writer_rubric.txt' and the 'knowledge/daily_socials_knowledge/style_guide.txt' files.
   expected_output: >
-    A final curated set of exactly 3 social media posts (one for each of the 3 selected stories) 
-    focused on religious trends and theological shifts. Importantly, you must include the related URL sources alongside each post.
+    EXACTLY 3 distinct stories. For EACH of the 3 stories, you must provide a Short Rendition, Medium Rendition, and Long Rendition. You must clearly include the Source URL for each story.
   agent: religion_writer
   context:
     - clean_religion_data
 
 edit_and_select_final_options:
   description: >
-    Review all drafts from the three writers. Apply the provided strategic 
-    rubric to audit tone, accuracy, and salience. Select and polish the 
-    absolute best 9 options for final delivery.
-    
-    CRITICAL INSTRUCTION: You MUST use the FileReadTool to read BOTH the 
-    'knowledge/daily_socials_knowledge/chief_editor_rubric.txt' and the 
-    'knowledge/daily_socials_knowledge/style_guide.txt' files. You must strictly follow 
-    the strategic guidelines in the editor rubric and the formatting and brand rules in the style guide.
+    Review all drafts from the three writers. You will receive 3 AI stories, 3 Culture stories, and 3 Religion stories (9 distinct stories total). 
+    Do NOT filter or delete any of these stories. You must process, polish, and output ALL 9 stories.
+    CRITICAL INSTRUCTION: You MUST use the FileReadTool to read BOTH the 'knowledge/daily_socials_knowledge/chief_editor_rubric.txt' and the 'knowledge/daily_socials_knowledge/style_guide.txt' files.
   expected_output: >
-    A final list of 9 polished social media posts, mapped to the rubric, 
-    formatted and ready for immediate publication. Importantly, you must include the final source URLs for each post so they can be easily shared.
+    A final formatted list containing exactly 9 distinct stories. They MUST be numbered sequentially from ITEM 1 through ITEM 9. Every single ITEM must include its Source URL, followed by a Short Rendition, Medium Rendition, and Long Rendition.
   agent: chief_editor
   context:
     - write_ai_social_options

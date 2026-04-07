@@ -86,43 +86,73 @@ class DailySocialsCrew:
     # --- TASKS ---
     @task
     def research_ai_trends(self) -> Task:
-        return Task(config=self.tasks_config["research_ai_trends"])
+        return Task(
+            config=self.tasks_config["research_ai_trends"],
+            output_file='audit_01_research_ai.txt'
+        )
 
     @task
     def research_culture_politics(self) -> Task:
-        return Task(config=self.tasks_config["research_culture_politics"])
+        return Task(
+            config=self.tasks_config["research_culture_politics"],
+            output_file='audit_01_research_culture.txt'
+        )
 
     @task
     def research_religion_nationalism(self) -> Task:
-        return Task(config=self.tasks_config["research_religion_nationalism"])
+        return Task(
+            config=self.tasks_config["research_religion_nationalism"],
+            output_file='audit_01_research_religion.txt'
+        )
 
     @task
     def clean_ai_data(self) -> Task:
-        return Task(config=self.tasks_config["clean_ai_data"])
+        return Task(
+            config=self.tasks_config["clean_ai_data"],
+            output_file='audit_02_clean_ai.txt'
+        )
 
     @task
     def clean_culture_data(self) -> Task:
-        return Task(config=self.tasks_config["clean_culture_data"])
+        return Task(
+            config=self.tasks_config["clean_culture_data"],
+            output_file='audit_02_clean_culture.txt'
+        )
 
     @task
     def clean_religion_data(self) -> Task:
-        return Task(config=self.tasks_config["clean_religion_data"])
+        return Task(
+            config=self.tasks_config["clean_religion_data"],
+            output_file='audit_02_clean_religion.txt'
+        )
 
     @task
     def write_ai_social_options(self) -> Task:
-        return Task(config=self.tasks_config["write_ai_social_options"])
+        return Task(
+            config=self.tasks_config["write_ai_social_options"],
+            output_file='audit_03_write_ai.txt'
+        )
 
     @task
     def write_culture_social_options(self) -> Task:
-        return Task(config=self.tasks_config["write_culture_social_options"])
+        return Task(
+            config=self.tasks_config["write_culture_social_options"],
+            output_file='audit_03_write_culture.txt'
+        )
 
     @task
     def write_religion_social_options(self) -> Task:
-        return Task(config=self.tasks_config["write_religion_social_options"])
+        return Task(
+            config=self.tasks_config["write_religion_social_options"],
+            output_file='audit_03_write_religion.txt'
+        )
 
     @task
     def edit_and_select_final_options(self) -> Task:
-        return Task(config=self.tasks_config["edit_and_select_final_options"])
+        return Task(
+            config=self.tasks_config["edit_and_select_final_options"],
+            output_file='audit_04_chief_editor_final.txt'
+        )
 
     # --- CREW ---
     @crew
