@@ -35,11 +35,17 @@ jobs:
 
       - name: Run Global Agent System
         env:
-          # These map to the hidden secrets we will add in Step 3
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          # --- Hardcoded Settings (No secrets required) ---
+          MODEL: "gemini/gemini-2.5-flash"
+          GOOGLE_API_VERSION: "v1"
+          EMBEDDINGS_GOOGLE_GENERATIVE_AI_MODEL_NAME: "gemini-embedding-001"
+          EMBEDDINGS_GOOGLE_GENERATIVE_AI_TASK_TYPE: "RETRIEVAL_DOCUMENT"
+
+          # --- Actual Secure Passwords ---
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
+          CHROMA_HUGGINGFACE_API_KEY: ${{ secrets.CHROMA_HUGGINGFACE_API_KEY }}
           DAILY_SOCIALS_GOOGLE_SHEET_ID: ${{ secrets.DAILY_SOCIALS_GOOGLE_SHEET_ID }}
-          # We point the script to the temporary file we just made
           DAILY_SOCIALS_GOOGLE_CREDENTIALS: "google_credentials.json"
         run: uv run python src/global_agent_system/main.py
 
