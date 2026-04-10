@@ -113,6 +113,32 @@ def send_to_google_sheets(chief_editor_raw: str) -> None:
         print(f"Google Sheets delivery failed: {e}")
 
 
+def log_run_to_history(crew_result) -> None:
+    """Logs the raw output of every task in the crew to a 'Runs History' tab."""
+    cred_env = os.environ.get("DAILY_SOCIALS_GOOGLE_CREDENTIALS")
+    sheet_id = os.environ.get("DAILY_SOCIALS_GOOGLE_SHEET_ID")
+    if not cred_env or not sheet_id:
+        return
+
+    try:
+        cred_path = os.path.abspath(os.path.expanduser(cred_env))
+        creds = Credentials.from_service_account_file(cred_path, scopes=_GSHEETS_SCOPES)
+        gc = gspread.authorize(creds)
+        spreadsheet = gc.open_by_key(sheet_id.strip())
+        worksheet = spreadsheet.worksheet("Runs History")
+
+        # Create the row data: [Timestamp, Task1 Output, Task2 Output...]
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        task_outputs = [task.raw for task in crew_result.tasks_output]
+        row_data = [timestamp] + task_outputs
+
+        # Append to the next completely empty row
+        worksheet.append_row(row_data, value_input_option="USER_ENTERED")
+        print("🚀 Google Sheets: Run history successfully logged to 'Runs History'.")
+    except Exception as e:
+        print(f"❌ Google Sheets history logging failed: {e}")
+
+
 class AgentState(BaseModel):
     topic: str = ""
     content_output: str = ""
@@ -151,6 +177,7 @@ class AgentFlow(Flow[AgentState]):
         )
         self.state.content_output = result.raw
         send_to_google_sheets(result.raw)
+        log_run_to_history(result) # NEW: Logs the full crew execution to the History tab
 
 
 # --- NEW SCHEDULER LOGIC ---

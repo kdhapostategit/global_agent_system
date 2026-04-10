@@ -2,58 +2,58 @@
 
 research_ai_trends:
   description: >
-    Search r/singularity, r/accelerate, Hacker News, and the bleeding-edge AI spaces on X/Twitter 
-    for the absolute biggest, most paradigm-shifting AI news of the past 24 hours. You are hunting 
-    for major model drops, timeline accelerations, technical breakthroughs, and the major cultural 
-    conversations and debates happening within these communities. Your primary goal is to gather 
-    the raw data, facts, and prevailing community sentiments. Do not apply a philosophical filter 
+    Search r/singularity, r/accelerate, Hacker News, and the bleeding-edge AI spaces on X/Twitter
+    for the absolute biggest, most paradigm-shifting AI news of the past 24 hours. You are hunting
+    for major model drops, timeline accelerations, technical breakthroughs, and the major cultural
+    conversations and debates happening within these communities. Your primary goal is to gather
+    the raw data, facts, and prevailing community sentiments. Do not apply a philosophical filter
     yourself—simply prep the most salient data so the writer can apply their rubric later.
-    
+   
     CRITICAL INSTRUCTION: You MUST use the FileReadTool to read the 'knowledge/daily_socials_knowledge/ai_researcher_rubric.txt' file. You must strictly follow the formatting rules provided in that document.
-    
+   
     TOOL INSTRUCTION: You must use the RSSFeedTool alongside the SerperDevTool and ScrapeWebsiteTool to gather the most up-to-date and relevant grassroots discussions.
   expected_output: >
-    A list of the top 5 trending philosophical or technological breakthroughs 
+    A list of the top 5 trending philosophical or technological breakthroughs
     with 2 paragraphs of context on why they are significant to the transhumanist conversation. Importantly, you must include all URL sources.
   agent: ai_researcher
 
 research_culture_politics:
   description: >
-    Monitor r/politics, AP, and Reuters for trending U.S. news and global events that directly 
-    concern or impact the U.S. Identify stories that deserve commentary, slightly prioritizing 
+    Monitor r/politics, AP, and Reuters for trending U.S. news and global events that directly
+    concern or impact the U.S. Identify stories that deserve commentary, slightly prioritizing
     those that intersect with Christian Nationalism, GenAI, or major cultural shifts.
-    
+   
     CRITICAL INSTRUCTION: You MUST use the FileReadTool to read the 'knowledge/daily_socials_knowledge/culture_researcher_rubric.txt' file. You must strictly follow the formatting rules provided in that document.
-    
+   
     TOOL INSTRUCTION: You must use the RSSFeedTool for any Reddit sources (like r/politics), alongside the SerperDevTool and ScrapeWebsiteTool to ensure the data gathered is real-time, accurate, and properly sourced with URLs.
   expected_output: >
-    A summary of 5 high-salience news stories with primary source links 
+    A summary of 5 high-salience news stories with primary source links
     and 2 paragraphs of explanation of the current public sentiment. Importantly, you must include all URL sources.
   agent: culture_politics_researcher
 
 research_religion_nationalism:
   description: >
-    Gather factual data on Christian Nationalism and its antagonists. Focus specifically 
-    on powerful political figures and influencers who resonate with Christian Nationalism 
-    (e.g., Mike Johnson, Marjorie Taylor Greene, Lauren Boebert, Michael Flynn, and 
-    leaders within the New Apostolic Reformation). Map their activities and the counter-activities 
-    from secular humanists, interfaith coalitions, legal watchdogs, and scientific rationalists. 
+    Gather factual data on Christian Nationalism and its antagonists. Focus specifically
+    on powerful political figures and influencers who resonate with Christian Nationalism
+    (e.g., Mike Johnson, Marjorie Taylor Greene, Lauren Boebert, Michael Flynn, and
+    leaders within the New Apostolic Reformation). Map their activities and the counter-activities
+    from secular humanists, interfaith coalitions, legal watchdogs, and scientific rationalists.
     Maintain strict neutrality.
-    
+   
     CRITICAL INSTRUCTION: You MUST use the FileReadTool to read the 'knowledge/daily_socials_knowledge/religion_researcher_rubric.txt' file. You must strictly follow the formatting rules provided in that document.
-    
+   
     TOOL INSTRUCTION: Utilize the SerperDevTool and ScrapeWebsiteTool to ensure the data gathered is real-time, accurate, and properly sourced with URLs.
   expected_output: >
-    A factual report detailing 5 key developments in religious power 
+    A factual report detailing 5 key developments in religious power
     dynamics and 2 paragraphs of specific responses from antagonist groups. Importantly, you must include all URL sources.
   agent: religion_researcher
 
 clean_ai_data:
   description: >
-    Review findings from the AI researcher. Remove duplicates, verify links, 
-    and organize the data into a strict JSON format for the AI writer. 
+    Review findings from the AI researcher. Remove duplicates, verify links,
+    and organize the data into a strict JSON format for the AI writer.
     Identify the most 'salient' stories from the AI category.
-    
+   
     You MUST format your output as a JSON array of objects using exactly this template:
     [
       {
@@ -63,7 +63,7 @@ clean_ai_data:
         "urls": ["https://source-url-1.com", "https://source-url-2.com"]
       }
     ]
-    
+   
     CRITICAL INSTRUCTION: You MUST use the FileReadTool to read the 'knowledge/daily_socials_knowledge/data_cleaner_rubric.txt' file. You must strictly follow the formatting rules provided in that document.
   expected_output: >
     A strictly formatted JSON array containing the most relevant facts, 2 paragraphs of context for each story, and all preserved source URLs for the AI category.
@@ -73,10 +73,10 @@ clean_ai_data:
 
 clean_culture_data:
   description: >
-    Review findings from the culture researcher. Remove duplicates, verify links, 
-    and organize the data into a strict JSON format for the culture writer. 
+    Review findings from the culture researcher. Remove duplicates, verify links,
+    and organize the data into a strict JSON format for the culture writer.
     Identify the most 'salient' stories from the Culture category.
-    
+   
     You MUST format your output as a JSON array of objects using exactly this template:
     [
       {
@@ -86,7 +86,7 @@ clean_culture_data:
         "urls": ["https://source-url-1.com", "https://source-url-2.com"]
       }
     ]
-    
+   
     CRITICAL INSTRUCTION: You MUST use the FileReadTool to read the 'knowledge/daily_socials_knowledge/data_cleaner_rubric.txt' file. You must strictly follow the formatting rules provided in that document.
   expected_output: >
     A strictly formatted JSON array containing the most relevant facts, 2 paragraphs of context for each story, and all preserved source URLs for the Culture category.
@@ -96,10 +96,10 @@ clean_culture_data:
 
 clean_religion_data:
   description: >
-    Review findings from the religion researcher. Remove duplicates, verify links, 
-    and organize the data into a strict JSON format for the religion writer. 
+    Review findings from the religion researcher. Remove duplicates, verify links,
+    and organize the data into a strict JSON format for the religion writer.
     Identify the most 'salient' stories from the Religion category.
-    
+   
     You MUST format your output as a JSON array of objects using exactly this template:
     [
       {
@@ -109,7 +109,7 @@ clean_religion_data:
         "urls": ["https://source-url-1.com", "https://source-url-2.com"]
       }
     ]
-    
+   
     CRITICAL INSTRUCTION: You MUST use the FileReadTool to read the 'knowledge/daily_socials_knowledge/data_cleaner_rubric.txt' file. You must strictly follow the formatting rules provided in that document.
   expected_output: >
     A strictly formatted JSON array containing the most relevant facts, 2 paragraphs of context for each story, and all preserved source URLs for the Religion category.
@@ -119,8 +119,9 @@ clean_religion_data:
 
 write_ai_social_options:
   description: >
-    Using the cleaned AI research, select the 3 absolute best distinct stories. 
-    Evaluate them against the Selection Rubric (Narrative Tension, Virality Potential, Brand Alignment).
+    Using the cleaned AI research, select the 3 absolute best distinct stories.
+    Evaluate them against the Selection Rubric. You MUST focus on kevins_philosophy_source
+    as your primary POV. You are pretending to be Kevin.
     CRITICAL INSTRUCTION: You MUST use the FileReadTool to read BOTH the 'knowledge/daily_socials_knowledge/social_writer_rubric.txt' and the 'knowledge/daily_socials_knowledge/style_guide.txt' files.
   expected_output: >
     EXACTLY 3 distinct stories. For EACH of the 3 stories, you must provide a Short Rendition, Medium Rendition, and Long Rendition. You must clearly include the Source URL for each story.
@@ -130,8 +131,9 @@ write_ai_social_options:
 
 write_culture_social_options:
   description: >
-    Using the cleaned culture research, select the 3 absolute best distinct stories. 
-    Evaluate them against the Selection Rubric (Narrative Tension, Virality Potential, Brand Alignment).
+    Using the cleaned culture research, select the 3 absolute best distinct stories.
+    Evaluate them against the Selection Rubric. You MUST focus on kevins_philosophy_source
+    as your primary POV. You are pretending to be Kevin.
     CRITICAL INSTRUCTION: You MUST use the FileReadTool to read BOTH the 'knowledge/daily_socials_knowledge/social_writer_rubric.txt' and the 'knowledge/daily_socials_knowledge/style_guide.txt' files.
   expected_output: >
     EXACTLY 3 distinct stories. For EACH of the 3 stories, you must provide a Short Rendition, Medium Rendition, and Long Rendition. You must clearly include the Source URL for each story.
@@ -141,8 +143,9 @@ write_culture_social_options:
 
 write_religion_social_options:
   description: >
-    Using the cleaned religion research, select the 3 absolute best distinct stories. 
-    Evaluate them against the Selection Rubric (Narrative Tension, Virality Potential, Brand Alignment).
+    Using the cleaned religion research, select the 3 absolute best distinct stories.
+    Evaluate them against the Selection Rubric. You MUST focus on kevins_philosophy_source
+    as your primary POV. You are pretending to be Kevin.
     CRITICAL INSTRUCTION: You MUST use the FileReadTool to read BOTH the 'knowledge/daily_socials_knowledge/social_writer_rubric.txt' and the 'knowledge/daily_socials_knowledge/style_guide.txt' files.
   expected_output: >
     EXACTLY 3 distinct stories. For EACH of the 3 stories, you must provide a Short Rendition, Medium Rendition, and Long Rendition. You must clearly include the Source URL for each story.
@@ -152,7 +155,7 @@ write_religion_social_options:
 
 edit_and_select_final_options:
   description: >
-    Review all drafts from the three writers. You will receive 3 AI stories, 3 Culture stories, and 3 Religion stories (9 distinct stories total). 
+    Review all drafts from the three writers. You will receive 3 AI stories, 3 Culture stories, and 3 Religion stories (9 distinct stories total).
     Do NOT filter or delete any of these stories. You must process, polish, and output ALL 9 stories.
     CRITICAL INSTRUCTION: You MUST use the FileReadTool to read BOTH the 'knowledge/daily_socials_knowledge/chief_editor_rubric.txt' and the 'knowledge/daily_socials_knowledge/style_guide.txt' files.
   expected_output: >
