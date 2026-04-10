@@ -1,0 +1,52 @@
+name: Daily Socials Crew Scheduler
+
+on:
+  schedule:
+    # GitHub uses UTC time. Assuming you are in EDT (UTC-4):
+    # 12 = 8 AM | 16 = 12 PM | 20 = 4 PM | 0 = 8 PM
+    # 1-5 means Monday through Friday.
+    - cron: '0 12,16,20,0 * * 1-5'
+  workflow_dispatch: # This adds a manual "Play" button on GitHub
+
+jobs:
+  run-crew:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install uv (Package Manager)
+        uses: astral-sh/setup-uv@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12' 
+
+      - name: Install Dependencies
+        run: uv sync
+
+      - name: Create Google Credentials File
+        # GitHub creates a temporary file from your secret so the script can read it
+        run: echo "$GOOGLE_CREDS" > google_credentials.json
+        env:
+          GOOGLE_CREDS: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
+
+      - name: Run Global Agent System
+        env:
+          # These map to the hidden secrets we will add in Step 3
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
+          DAILY_SOCIALS_GOOGLE_SHEET_ID: ${{ secrets.DAILY_SOCIALS_GOOGLE_SHEET_ID }}
+          # We point the script to the temporary file we just made
+          DAILY_SOCIALS_GOOGLE_CREDENTIALS: "google_credentials.json"
+        run: uv run python src/global_agent_system/main.py
+
+      - name: Save Logs as Artifact
+        if: always() # Saves the log even if the run crashes
+        uses: actions/upload-artifact@v4
+        with:
+          name: crew-logs
+          path: logs/crew_run.txt
+          retention-days: 7

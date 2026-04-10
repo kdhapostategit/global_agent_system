@@ -4,6 +4,14 @@ from crewai_tools import SerperDevTool, ScrapeWebsiteTool, FileReadTool
 
 from global_agent_system.tools.custom_tool import RSSFeedTool
 
+# 1. Create a tool that strictly searches the Google News tab for the last 24 hours (tbs=qdr:d)
+news_search_tool = SerperDevTool(
+    search_url="https://google.serper.dev/news",
+    search_params={"tbs": "qdr:d"} 
+)
+
+# 2. Create a tool that pulls directly from a reliable Christian/Religion news feed
+religion_rss_tool = RSSFeedTool(feed_url='https://religionnews.com/feed/')
 
 @CrewBase
 class DailySocialsCrew:
@@ -42,9 +50,10 @@ class DailySocialsCrew:
         return Agent(
             config=self.agents_config["religion_researcher"],
             tools=[
-                SerperDevTool(),
-                ScrapeWebsiteTool(),
-                FileReadTool(),
+                religion_rss_tool,   # It checks the direct feed first
+                news_search_tool,    # It searches Google News (last 24 hours only)
+                ScrapeWebsiteTool(), # It clicks and reads the articles it finds
+                FileReadTool(),      # It reads your rubric
             ],
         )
 

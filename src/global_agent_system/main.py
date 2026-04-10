@@ -224,33 +224,22 @@ def sync_google_docs():
 
 
 def kickoff():
-    """Switch between single-run (Testing) and continuous-loop (Production)"""
+    """Runs a single cycle of the Global Agent System (Triggered by GitHub)"""
+    # 1. Clear old logs
+    os.makedirs('logs', exist_ok=True)
+    log_path = 'logs/crew_run.txt'
+    if os.path.exists(log_path):
+        open(log_path, 'w').close()
+        
+    # 2. Sync knowledge base
     sync_google_docs()
     print("--- Global Agent System Started ---")
-    
-    # --- OPTION A: POEM CREW TEST (Deactivated) ---
-    # print(f"[{datetime.now()}] GM: Running Poem Crew test cycle...")
-    # agent_flow = AgentFlow()
-    # agent_flow.kickoff(inputs={"topic": "Write a short haiku about a robot"})
-    # print(f"[{datetime.now()}] GM: Poem test complete.")
 
-    # --- OPTION B: SOCIAL CREW SINGLE RUN (Activated for Sheets Test) ---
-    print(f"[{datetime.now()}] GM: Running single Social Crew cycle...")
+    # 3. Run exactly one cycle
+    print(f"[{datetime.now()}] GM: Running Scheduled Social Crew cycle...")
     agent_flow = AgentFlow()
     agent_flow.kickoff(inputs={"topic": "Create daily social options across 3 beats"})
-    print(f"[{datetime.now()}] GM: Social test complete.")
-
-    # --- OPTION C: SCHEDULER LOOP (Commented out for Production) ---
-    # while True:
-    #     if is_office_hours():
-    #         print(f"[{datetime.now()}] GM: Starting a new 4-hour cycle...")
-    #         agent_flow = AgentFlow()
-    #         agent_flow.kickoff(inputs={"topic": "Create daily social options across 3 beats"})
-    #         print(f"[{datetime.now()}] GM: Cycle complete. Sleeping for 4 hours.")
-    #         time.sleep(14400)
-    #     else:
-    #         print(f"[{datetime.now()}] GM: Outside office hours. Checking again in 30 mins.")
-    #         time.sleep(1800)
+    print(f"[{datetime.now()}] GM: Cycle complete.")
 
 
 def plot():

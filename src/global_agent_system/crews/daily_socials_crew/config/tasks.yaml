@@ -39,10 +39,10 @@ research_religion_nationalism:
     leaders within the New Apostolic Reformation). Map their activities and the counter-activities
     from secular humanists, interfaith coalitions, legal watchdogs, and scientific rationalists.
     Maintain strict neutrality.
-   
+    
     CRITICAL INSTRUCTION: You MUST use the FileReadTool to read the 'knowledge/daily_socials_knowledge/religion_researcher_rubric.txt' file. You must strictly follow the formatting rules provided in that document.
-   
-    TOOL INSTRUCTION: Utilize the SerperDevTool and ScrapeWebsiteTool to ensure the data gathered is real-time, accurate, and properly sourced with URLs.
+    
+    TOOL INSTRUCTION: You MUST prioritize using the RSSFeedTool to check the direct news feeds first. If you need more stories to reach your 5-item quota, utilize the SerperDevTool and ScrapeWebsiteTool to ensure the data gathered is real-time, accurate, and properly sourced with URLs.
   expected_output: >
     A factual report detailing 5 key developments in religious power
     dynamics and 2 paragraphs of specific responses from antagonist groups. Importantly, you must include all URL sources.
