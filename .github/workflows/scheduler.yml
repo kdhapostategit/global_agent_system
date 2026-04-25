@@ -3,9 +3,9 @@ name: Daily Socials Crew Scheduler
 on:
   schedule:
     # GitHub uses UTC time. Assuming you are in EDT (UTC-4):
-    # 12 = 8 AM | 16 = 12 PM | 20 = 4 PM | 0 = 8 PM
+    # 12 = 8 AM
     # 1-5 means Monday through Friday.
-    - cron: '0 12,16,20,0 * * 1-5'
+    - cron: '0 12 * * 1-5'
   workflow_dispatch: # This adds a manual "Play" button on GitHub
 
 jobs:
