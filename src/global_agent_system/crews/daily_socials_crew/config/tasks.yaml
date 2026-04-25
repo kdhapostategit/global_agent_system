@@ -1,22 +1,38 @@
 # src/global_agent_system/crews/daily_socials_crew/config/tasks.yaml
 
-research_ai_trends:
+  research_ai_trends:
   description: >
     Search r/singularity, r/accelerate, Hacker News, and the bleeding-edge AI spaces on X/Twitter
     for the absolute biggest, most paradigm-shifting AI news of the past 24 hours. You are hunting
     for major model drops, timeline accelerations, technical breakthroughs, and the major cultural
     conversations and debates happening within these communities. Your primary goal is to gather
-    the raw data, facts, and prevailing community sentiments. Do not apply a philosophical filter
-    yourself—simply prep the most salient data so the writer can apply their rubric later.
+    the raw data, facts, and prevailing community sentiments. Your job is simply to prep the most salient data so the writer can apply their rubric later.
    
     CRITICAL INSTRUCTION: You MUST use the FileReadTool to read the 'knowledge/daily_socials_knowledge/ai_researcher_rubric.txt' file. You must strictly follow the formatting rules provided in that document.
    
     TOOL INSTRUCTION: You must use the RSSFeedTool alongside the SerperDevTool and ScrapeWebsiteTool to gather the most up-to-date and relevant grassroots discussions.
+    
+    RSS FEED URLS TO USE:
+    - https://www.reddit.com/r/singularity/top/.rss?t=day
+    - https://www.reddit.com/r/accelerate/top/.rss?t=day
+    - https://www.reddit.com/r/Futurology/top/.rss?t=day
+    - https://www.reddit.com/r/transhumanism/top/.rss?t=day
+    - https://www.reddit.com/r/agi/top/.rss?t=day
+    - https://www.reddit.com/r/LocalLLaMA/top/.rss?t=day
+    - https://www.reddit.com/r/artificial/top/.rss?t=day
+    - https://hnrss.org/frontpage
+    
+    STEP-BY-STEP SEARCH STRATEGY:
+    1. Check the provided RSS feeds above using the RSSFeedTool to identify 3-4 recurring themes or grassroots hype.
+    2. Use the news_search_tool to find reputable articles corroborating those themes from elite tech journals.
+    3. Use the ScrapeWebsiteTool to read the full text of the most promising URLs to verify factual accuracy before finalizing the summary.
+    4. For X/Twitter news, search for reputable news articles *about* what key figures tweeted rather than trying to scrape Twitter directly.
+
     CRITICAL SEARCH INSTRUCTION: When using the search tool, DO NOT use conversational sentences or questions. Use strict, simple keywords.
     Good Example: 'Sam Altman AI news' or 'Anthropic new model release'
     Bad Example: 'What did Sam Altman and Elon Musk say about AI today?'
   expected_output: >
-    A list of the top 5 trending philosophical points of interest or technological breakthroughs, economic impacts, popular discourse, etc.
+    A list of the top 3 trending philosophical points of interest or technological breakthroughs, economic impacts, popular discourse, etc.
     Importantly, you must include all URL sources.
   agent: ai_researcher
 
