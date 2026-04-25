@@ -3,6 +3,7 @@ from re import sub as re_sub
 from typing import Type
 
 import feedparser
+import requests
 from pydantic import BaseModel, Field
 
 from crewai.tools import BaseTool
@@ -31,7 +32,16 @@ class RSSFeedTool(BaseTool):
     args_schema: Type[BaseModel] = RSSFeedToolInput
 
     def _run(self, rss_url: str) -> str:
-        parsed = feedparser.parse(rss_url)
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+        }
+        try:
+            response = requests.get(rss_url, headers=headers, timeout=10)
+            response.raise_for_status()
+            parsed = feedparser.parse(response.content)
+        except Exception as e:
+            return f"Failed to fetch or parse feed: {str(e)}"
+
         if getattr(parsed, "bozo", False) and not getattr(parsed, "entries", None):
             err = getattr(parsed, "bozo_exception", None)
             return f"Failed to parse feed: {err or 'unknown error'}"

@@ -27,7 +27,7 @@ class DailySocialsCrew:
             config=self.agents_config["ai_researcher"],
             tools=[
                 RSSFeedTool(),
-                SerperDevTool(),
+                news_search_tool,
                 ScrapeWebsiteTool(),
                 FileReadTool(),
             ],
@@ -39,7 +39,7 @@ class DailySocialsCrew:
             config=self.agents_config["culture_politics_researcher"],
             tools=[
                 RSSFeedTool(),
-                SerperDevTool(),
+                news_search_tool,
                 ScrapeWebsiteTool(),
                 FileReadTool(),
             ],
