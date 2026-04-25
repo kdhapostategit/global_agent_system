@@ -13,11 +13,11 @@ research_ai_trends:
    
     TOOL INSTRUCTION: You must use the RSSFeedTool alongside the SerperDevTool and ScrapeWebsiteTool to gather the most up-to-date and relevant grassroots discussions.
     CRITICAL SEARCH INSTRUCTION: When using the search tool, DO NOT use conversational sentences or questions. Use strict, simple keywords.
-    Good Example: 'Marjorie Taylor Greene Christian Nationalism' or 'OpenAI new model release'
-    Bad Example: 'What did Marjorie Taylor Greene say about Christian Nationalism today?'
+    Good Example: 'Sam Altman AI news' or 'Anthropic new model release'
+    Bad Example: 'What did Sam Altman and Elon Musk say about AI today?'
   expected_output: >
-    A list of the top 5 trending philosophical or technological breakthroughs
-    with 2 paragraphs of context on why they are significant to the transhumanist conversation. Importantly, you must include all URL sources.
+    A list of the top 5 trending philosophical points of interest or technological breakthroughs, economic impacts, popular discourse, etc.
+    Importantly, you must include all URL sources.
   agent: ai_researcher
 
 research_culture_politics:
@@ -30,8 +30,8 @@ research_culture_politics:
    
     TOOL INSTRUCTION: You must use the RSSFeedTool for any Reddit sources (like r/politics), alongside the SerperDevTool and ScrapeWebsiteTool to ensure the data gathered is real-time, accurate, and properly sourced with URLs.
     CRITICAL SEARCH INSTRUCTION: When using the search tool, DO NOT use conversational sentences or questions. Use strict, simple keywords.
-    Good Example: 'Marjorie Taylor Greene Christian Nationalism' or 'OpenAI new model release'
-    Bad Example: 'What did Marjorie Taylor Greene say about Christian Nationalism today?'
+    Good Example: 'Iran news today' or 'Donald Trump today'
+    Bad Example: 'What did Donald Trump say about Iran today?'
   expected_output: >
     A summary of 5 high-salience news stories with primary source links
     and 2 paragraphs of explanation of the current public sentiment. Importantly, you must include all URL sources.
