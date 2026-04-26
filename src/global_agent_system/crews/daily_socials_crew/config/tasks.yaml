@@ -1,6 +1,6 @@
 # src/global_agent_system/crews/daily_socials_crew/config/tasks.yaml
 
-  research_ai_trends:
+research_ai_trends:
   description: >
     Search r/singularity, r/accelerate, Hacker News, and the bleeding-edge AI spaces on X/Twitter
     for the absolute biggest, most paradigm-shifting AI news of the past 24 hours. You are hunting
@@ -176,47 +176,47 @@ clean_religion_data:
 
 write_ai_social_options:
   description: >
-    Using the cleaned AI research, select the 3 absolute best distinct stories.
+    Using the cleaned AI research, review the provided distinct stories (up to 3 maximum).
     Evaluate them against the Selection Rubric. You MUST focus on kevins_philosophy_source
     as your primary POV. You are pretending to be Kevin.
     CRITICAL INSTRUCTION: You MUST use the FileReadTool to read BOTH the 'knowledge/daily_socials_knowledge/social_writer_rubric.txt' and the 'knowledge/daily_socials_knowledge/style_guide.txt' files.
   expected_output: >
-    EXACTLY 3 distinct stories. For EACH of the 3 stories, you must provide a Short Rendition, Medium Rendition, and Long Rendition. You must clearly include the Source URL for each story.
+    Up to 3 distinct stories (based strictly on how many were provided by the researcher). For EACH story, you must provide a Short Rendition, Medium Rendition, and Long Rendition. You must clearly include the Source URL for each story.
   agent: ai_writer
   context:
     - clean_ai_data
 
 write_culture_social_options:
   description: >
-    Using the cleaned culture research, select the 3 absolute best distinct stories.
+    Using the cleaned culture research, review the provided distinct stories (up to 3 maximum).
     Evaluate them against the Selection Rubric. You MUST focus on kevins_philosophy_source
     as your primary POV. You are pretending to be Kevin.
     CRITICAL INSTRUCTION: You MUST use the FileReadTool to read BOTH the 'knowledge/daily_socials_knowledge/social_writer_rubric.txt' and the 'knowledge/daily_socials_knowledge/style_guide.txt' files.
   expected_output: >
-    EXACTLY 3 distinct stories. For EACH of the 3 stories, you must provide a Short Rendition, Medium Rendition, and Long Rendition. You must clearly include the Source URL for each story.
+    Up to 3 distinct stories (based strictly on how many were provided by the researcher). For EACH story, you must provide a Short Rendition, Medium Rendition, and Long Rendition. You must clearly include the Source URL for each story.
   agent: culture_writer
   context:
     - clean_culture_data
 
 write_religion_social_options:
   description: >
-    Using the cleaned religion research, select the 3 absolute best distinct stories.
+    Using the cleaned religion research, review the provided distinct stories (up to 3 maximum).
     Evaluate them against the Selection Rubric. You MUST focus on kevins_philosophy_source
     as your primary POV. You are pretending to be Kevin.
     CRITICAL INSTRUCTION: You MUST use the FileReadTool to read BOTH the 'knowledge/daily_socials_knowledge/social_writer_rubric.txt' and the 'knowledge/daily_socials_knowledge/style_guide.txt' files.
   expected_output: >
-    EXACTLY 3 distinct stories. For EACH of the 3 stories, you must provide a Short Rendition, Medium Rendition, and Long Rendition. You must clearly include the Source URL for each story.
+    Up to 3 distinct stories (based strictly on how many were provided by the researcher). For EACH story, you must provide a Short Rendition, Medium Rendition, and Long Rendition. You must clearly include the Source URL for each story.
   agent: religion_writer
   context:
     - clean_religion_data
 
 edit_and_select_final_options:
   description: >
-    Review all drafts from the three writers. You will receive 3 AI stories, 3 Culture stories, and 3 Religion stories (9 distinct stories total).
-    Do NOT filter or delete any of these stories. You must process, polish, and output ALL 9 stories.
+    Review all drafts from the three writers. You will receive up to 3 AI stories, 3 Culture stories, and 3 Religion stories.
+    Do NOT filter or delete any of these stories. You must process, polish, and output ALL stories provided to you.
     CRITICAL INSTRUCTION: You MUST use the FileReadTool to read BOTH the 'knowledge/daily_socials_knowledge/chief_editor_rubric.txt' and the 'knowledge/daily_socials_knowledge/style_guide.txt' files.
   expected_output: >
-    A final formatted list containing exactly 9 distinct stories. They MUST be numbered sequentially from ITEM 1 through ITEM 9. Every single ITEM must include its Source URL, followed by a Short Rendition, Medium Rendition, and Long Rendition.
+    A final formatted list containing all the stories provided to you. They MUST be numbered sequentially from ITEM 1 onwards. Every single ITEM must include its Source URL, followed by a Short Rendition, Medium Rendition, and Long Rendition.
   agent: chief_editor
   context:
     - write_ai_social_options
