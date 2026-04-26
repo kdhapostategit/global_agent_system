@@ -44,19 +44,35 @@
 
 research_culture_politics:
   description: >
-    Monitor r/politics, AP, and Reuters for trending U.S. news and global events that directly
+    Monitor r/politics, AP, Reuters, and progressive economic feeds for trending U.S. news and global events that directly
     concern or impact the U.S. Identify stories that deserve commentary, slightly prioritizing
     those that intersect with Christian Nationalism, GenAI, or major cultural shifts.
    
     CRITICAL INSTRUCTION: You MUST use the FileReadTool to read the 'knowledge/daily_socials_knowledge/culture_researcher_rubric.txt' file. You must strictly follow the formatting rules provided in that document.
    
-    TOOL INSTRUCTION: You must use the RSSFeedTool for any Reddit sources (like r/politics), alongside the SerperDevTool and ScrapeWebsiteTool to ensure the data gathered is real-time, accurate, and properly sourced with URLs.
-    CRITICAL SEARCH INSTRUCTION: When using the search tool, DO NOT use conversational sentences or questions. Use strict, simple keywords.
-    Good Example: 'Iran news today' or 'Donald Trump today'
-    Bad Example: 'What did Donald Trump say about Iran today?'
+    TOOL INSTRUCTION: You must use the RSSFeedTool, SerperDevTool, and ScrapeWebsiteTool to ensure the data gathered is real-time, accurate, and properly sourced with URLs.
+    
+    RSS FEED URLS TO USE:
+    - https://www.reddit.com/r/politics/top/.rss?t=day
+    - https://jacobin.com/feed/
+    - https://prospect.org/api/rss/content.rss
+    - https://www.propublica.org/feeds/propublica/main
+    - https://openrss.org/inthesetimes.com
+    - https://theintercept.com/feed/?lang=en
+    - http://feeds.feedburner.com/epi
+    - https://www.brookings.edu/rss/
+    - https://www.youtube.com/feeds/videos.xml?channel_id=UCzuqE7-t13O4NIDYJfakrhw
+    - https://www.youtube.com/feeds/videos.xml?channel_id=UC-3jIAlnQmbbVMV6gR7K8aQ
+    - https://www.youtube.com/feeds/videos.xml?channel_id=UCvixJtaIfwI5vAMYpAksFMA
+    - https://www.youtube.com/feeds/videos.xml?channel_id=UCjmCwLPsENEd4BwF0x9Q-OQ
+    - https://audioboom.com/channels/5166624.rss
+
+    STEP-BY-STEP SEARCH STRATEGY:
+    1. STEP 1 (RSS Baseline): First, use the RSSFeedTool to read through the provided RSS feeds. This will establish the major populist outrage, labor movements, and progressive talking points of the day.
+    2. STEP 2 (News Search): Next, use the news_search_tool to check for reputable mainstream reporting (Reuters, AP, Bloomberg) that corroborates the grassroots sentiment you found, or to hunt for major geopolitical and structural power shifts. CRITICAL SEARCH INSTRUCTION: When using the search tool, DO NOT use conversational sentences or questions. Use strict, simple keywords (e.g., 'Labor union strike Reuters' or 'China geopolitical AP News').
+    3. STEP 3 (Verification): Finally, once you have identified the most promising URLs from both tools, use the ScrapeWebsiteTool to read the full text of those specific articles to verify factual accuracy before drafting your final 3 items.
   expected_output: >
-    A summary of 5 high-salience news stories with primary source links
-    and 2 paragraphs of explanation of the current public sentiment. Importantly, you must include all URL sources.
+    A strictly formatted list of exactly 3 high-salience stories that perfectly follow the handoff template defined in the culture_researcher_rubric.txt file. Importantly, you must include all URL sources.
   agent: culture_politics_researcher
 
 research_religion_nationalism:
@@ -70,13 +86,23 @@ research_religion_nationalism:
     
     CRITICAL INSTRUCTION: You MUST use the FileReadTool to read the 'knowledge/daily_socials_knowledge/religion_researcher_rubric.txt' file. You must strictly follow the formatting rules provided in that document.
     
-    TOOL INSTRUCTION: You MUST prioritize using the RSSFeedTool to check the direct news feeds first. If you need more stories to reach your 5-item quota, utilize the SerperDevTool and ScrapeWebsiteTool to ensure the data gathered is real-time, accurate, and properly sourced with URLs.
-    CRITICAL SEARCH INSTRUCTION: When using the search tool, DO NOT use conversational sentences or questions. Use strict, simple keywords.
-    Good Example: 'Marjorie Taylor Greene Christian Nationalism' or 'OpenAI new model release'
-    Bad Example: 'What did Marjorie Taylor Greene say about Christian Nationalism today?'
+    TOOL INSTRUCTION: You must use the RSSFeedTool, SerperDevTool, and ScrapeWebsiteTool to ensure the data gathered is real-time, accurate, and properly sourced with URLs.
+    
+    RSS FEED URLS TO USE:
+    - https://religionnews.com/feed/
+    - https://www.christiantoday.com/rss.xml
+    - https://wng.org/rss
+    - https://openrss.org/www.au.org/the-latest/all
+    - https://ffrf.org/news/feed/
+    - https://friendlyatheist.com/feed
+    - https://julieroys.com/feed/
+
+    STEP-BY-STEP SEARCH STRATEGY:
+    1. STEP 1 (RSS Baseline): First, prioritize using the RSSFeedTool to check the direct news feeds provided above. This tracks the daily heartbeat of religious power dynamics and secular responses.
+    2. STEP 2 (News Search): If you need more context or are hunting for specific political figures (e.g., Mike Johnson), utilize the news_search_tool. CRITICAL SEARCH INSTRUCTION: When using the search tool, DO NOT use conversational sentences or questions. Use strict, simple keywords (e.g., 'Marjorie Taylor Greene Christian Nationalism' or 'Mike Johnson religion').
+    3. STEP 3 (Verification): Finally, use the ScrapeWebsiteTool to read the full text of your chosen articles to ensure the data is accurate and neutral before drafting your final 3 items.
   expected_output: >
-    A factual report detailing 5 key developments in religious power
-    dynamics and 2 paragraphs of specific responses from antagonist groups. Importantly, you must include all URL sources.
+    A strictly formatted list of exactly 3 high-salience stories that perfectly follow the handoff template defined in the religion_researcher_rubric.txt file. Importantly, you must include all URL sources.
   agent: religion_researcher
 
 clean_ai_data:
