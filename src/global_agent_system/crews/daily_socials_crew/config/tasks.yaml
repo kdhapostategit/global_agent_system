@@ -13,14 +13,20 @@
     TOOL INSTRUCTION: You must use the RSSFeedTool alongside the SerperDevTool and ScrapeWebsiteTool to gather the most up-to-date and relevant grassroots discussions.
     
     RSS FEED URLS TO USE:
+    - https://www.technologyreview.com/feed/
+    - https://www.wired.com/feed/rss
+    - https://techcrunch.com/category/artificial-intelligence/feed/
+    - https://raw.githubusercontent.com/Olshansk/rss-feeds/refs/heads/main/feeds/feed_openai_research.xml
+    - https://raw.githubusercontent.com/leontloveless/ai-rss-feeds/main/feeds/deepmind-blog.xml
+    - https://raw.githubusercontent.com/Olshansk/rss-feeds/refs/heads/main/feeds/feed_anthropic.xml
+    - https://hnrss.org/frontpage?link=comments
     - https://www.reddit.com/r/singularity/top/.rss?t=day
     - https://www.reddit.com/r/accelerate/top/.rss?t=day
-    - https://www.reddit.com/r/Futurology/top/.rss?t=day
+    - https://www.reddit.com/r/futurology/top/.rss?t=day
     - https://www.reddit.com/r/transhumanism/top/.rss?t=day
     - https://www.reddit.com/r/agi/top/.rss?t=day
     - https://www.reddit.com/r/LocalLLaMA/top/.rss?t=day
     - https://www.reddit.com/r/artificial/top/.rss?t=day
-    - https://hnrss.org/frontpage
     
     STEP-BY-STEP SEARCH STRATEGY:
     1. Check the provided RSS feeds above using the RSSFeedTool to identify 3-4 recurring themes or grassroots hype.
